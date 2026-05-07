@@ -23,7 +23,7 @@ body {
 .header-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 40px 80px;
+  padding: 15px 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -42,6 +42,10 @@ body {
   align-items: center;
   cursor: pointer;
   transition: opacity 0.2s;
+}
+
+.logo img {
+  height: 45px;
 }
 
 .main-nav {
@@ -107,6 +111,7 @@ body {
   }
 }
 
+/* Главная страница */
 .home-container {
   max-width: 1100px;
   margin: 0 auto;
@@ -212,233 +217,508 @@ body {
   margin-top: 12px;
 }
 
-.calculator-wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.calculator {
-  background: #1a2634;
-  border-radius: 44px;
-  padding: 28px 24px 32px;
-  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.25);
+/* Страница с инструментами */
+.tools-container {
+  max-width: 1400px;
+  margin: 0 auto;
   width: 100%;
-  max-width: 380px;
 }
 
-.calculator-screen {
-  background: #0d141c;
-  border-radius: 28px;
-  padding: 24px 20px;
+.tools-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.tools-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0a1a2f;
+  margin-bottom: 12px;
+}
+
+.tools-subtitle {
+  color: #64748b;
   margin-bottom: 24px;
-  text-align: right;
-  font-size: 2.8rem;
-  font-weight: 500;
-  font-family: 'Courier New', monospace;
-  color: #facc15;
-  min-height: 105px;
-  word-break: break-word;
-  letter-spacing: 2px;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
-.calculator-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.filter-input {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  outline: none;
+  width: 100%;
 }
 
-.btn-row {
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
+.filter-input:focus {
+  border-color: #3e72dd;
+  box-shadow: 0 0 0 3px rgba(62, 114, 221, 0.1);
 }
 
-.calc-btn {
-  background: #2d3e4f;
-  border: none;
-  border-radius: 60px;
-  width: 72px;
-  height: 72px;
-  font-size: 26px;
-  font-weight: 600;
-  color: white;
-  cursor: pointer;
-  transition: 0.08s linear;
-  font-family: 'Segoe UI', system-ui;
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+/* Карточка инструмента */
+.tool-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.tool-card-img-wrapper {
+  background: #f8fafc;
+  padding: 24px;
+  text-align: center;
+  height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.calc-btn:active {
-  transform: scale(0.95);
-  filter: brightness(0.88);
+.tool-card-img {
+  max-width: 100px;
+  max-height: 80px;
+  object-fit: contain;
 }
 
-.calc-btn.operator {
-  background: #ff9800;
-  color: #1e2a3a;
+.tool-card-body {
+  padding: 20px;
+}
+
+.tool-card-title {
+  font-size: 1.3rem;
   font-weight: 700;
+  color: #0a1a2f;
+  margin-bottom: 8px;
 }
 
-.calc-btn.special {
-  background: #5f6e7e;
+.tool-card-text {
+  color: #64748b;
+  margin-bottom: 12px;
+  line-height: 1.5;
 }
 
-.calc-btn.equal {
-  background: #ff9800;
-  flex: 1.6;
-  font-size: 30px;
+.tool-card-metric {
+  font-weight: 600;
+  color: #1d42be;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
 }
 
-.calc-btn.zero {
-  flex: 1.2;
+.tool-card-badge {
+  display: inline-block;
+  background: #eef2ff;
+  color: #1d42be;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
-.history-panel {
-  width: 260px;
+.tool-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eef2f6;
+}
+
+.details-btn {
+  background: #3e72dd;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.details-btn:hover {
+  background: #1d42be;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+/* Детальная страница */
+.detail-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.detail-card {
   background: white;
   border-radius: 24px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  max-height: 500px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 32px;
 }
 
-.history-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  background: #1a2634;
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
+.detail-card-body {
+  padding: 32px;
 }
 
-.history-clear-btn {
-  background: rgba(255, 255, 255, 0.15);
-  border: none;
-  color: white;
-  padding: 6px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.75rem;
-  font-weight: 500;
-  transition: background 0.2s;
-}
-
-.history-clear-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.history-list {
-  flex: 1;
-  padding: 12px;
-  overflow-y: auto;
-  max-height: 420px;
-  background: #f8fafc;
-}
-
-.history-empty {
-  text-align: center;
-  color: #94a3b8;
-  padding: 32px 16px;
-  font-size: 0.85rem;
-}
-
-.history-item {
-  background: white;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 8px;
-  border-left: 3px solid #3e72dd;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  transition: transform 0.1s;
-}
-
-.history-item:hover {
-  transform: translateX(3px);
-  background: #f1f5f9;
-}
-
-.history-expression {
-  font-size: 0.75rem;
-  color: #64748b;
-  margin-bottom: 6px;
-  word-break: break-word;
-}
-
-.history-result {
-  font-size: 1rem;
+.detail-card-title {
+  font-size: 2rem;
   font-weight: 700;
-  color: #1e293b;
-  word-break: break-word;
+  color: #0a1a2f;
+  margin-bottom: 16px;
 }
 
-@media (max-width: 700px) {
-  .calculator-wrapper {
-    flex-direction: column;
-    align-items: center;
-  }
-  .history-panel {
-    width: 100%;
-    max-width: 380px;
-    order: 2;
-  }
-  .calculator {
-    order: 1;
-  }
+.detail-card-type {
+  display: inline-block;
+  background: #eef2ff;
+  color: #1d42be;
+  padding: 6px 16px;
+  border-radius: 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
-@media (max-width: 450px) {
-  .calc-btn {
-    width: 60px;
-    height: 60px;
-    font-size: 22px;
-  }
-  .calculator-screen {
-    font-size: 2rem;
-    padding: 18px 16px;
-  }
-  .calculator {
-    padding: 20px;
-  }
+.detail-metric {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 12px;
+  color: #0a1a2f;
 }
 
-@media (max-width: 1100px) {
-  .header-container {
-    padding: 8px 20px;
-  }
-  .main-nav {
-    gap: 20px;
-  }
+.detail-card-text {
+  color: #334155;
+  line-height: 1.6;
+  margin-bottom: 24px;
 }
 
-@media (max-width: 900px) {
-  .header-container {
-    flex-direction: column;
-  }
-  .main-nav {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+.detail-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eef2f6;
+}
+
+.info-item {
+  background: #f8fafc;
+  padding: 12px 16px;
+  border-radius: 12px;
+}
+
+.info-label {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.info-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0a1a2f;
+}
+
+/* Аккордеон */
+.accordion-container {
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.accordion-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #0a1a2f;
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  background: #3e72dd;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 24px;
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  background: #1d42be;
 }
 
 @media (max-width: 768px) {
+  .header-container {
+    padding: 15px 20px;
+  }
+  
   .header-left {
     flex-direction: column;
     gap: 16px;
   }
+  
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+  
   .theme-card {
     padding: 32px 24px;
   }
-  .theme-title {
-    font-size: 1.8rem;
+  
+  .tools-title {
+    font-size: 1.6rem;
   }
+}
+/* Кнопка добавления */
+.tools-controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.add-tool-btn {
+    background: #2c553c;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.add-tool-btn:hover {
+    background: #1e3d2a;
+    transform: translateY(-2px);
+}
+
+/* Детальная страница инструмента */
+.detail-card-header {
+    background: #f8fafc;
+    padding: 32px;
+    text-align: center;
+}
+
+.detail-card-img-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.detail-card-img {
+    max-width: 150px;
+    max-height: 100px;
+    object-fit: contain;
+}
+
+.detail-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 16px;
+}
+
+.detail-info-item {
+    padding: 12px;
+}
+
+.detail-info-label {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.detail-info-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0a1a2f;
+}
+
+.calculation-example {
+    background: #eef2ff;
+    padding: 20px;
+    border-radius: 16px;
+    margin-top: 20px;
+}
+
+.calculation-example h4 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: #1d42be;
+}
+
+.calculation-example code {
+    background: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    font-family: monospace;
+}
+.tool-card-editable {
+    margin: 12px 0;
+    padding: 10px;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+.editable-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a2a3a;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.editable-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.metric-input {
+    width: 100px;
+    padding: 6px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.metric-unit {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.save-metric-btn {
+    background: #3e72dd;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.save-metric-btn:hover {
+    background: #1d42be;
+}
+
+/* Режим редактирования на странице деталей */
+.edit-mode {
+    margin-bottom: 24px;
+}
+
+.edit-field {
+    margin-bottom: 16px;
+}
+
+.edit-field label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a2a3a;
+    margin-bottom: 6px;
+}
+
+.edit-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: #3e72dd;
+    box-shadow: 0 0 0 3px rgba(62, 114, 221, 0.1);
+}
+
+.edit-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.edit-textarea:focus {
+    outline: none;
+    border-color: #3e72dd;
+    box-shadow: 0 0 0 3px rgba(62, 114, 221, 0.1);
+}
+
+.save-changes-btn {
+    background: #2c553c;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+}
+
+.save-changes-btn:hover {
+    background: #1e3d2a;
+    transform: translateY(-2px);
+}
+
+.calc-vu-input {
+    width: 120px;
+    padding: 6px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.calculation-example code {
+    display: block;
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-family: monospace;
+    font-size: 0.9rem;
 }
