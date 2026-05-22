@@ -59,7 +59,6 @@ export class ToolPage {
                 console.error('Ошибка сохранения:', error);
                 alert('Не удалось сохранить изменения');
             } else {
-                // Обновляем данные
                 getToolById(this.id, (err, data) => {
                     if (!err && data) {
                         this.tool = data;
@@ -70,7 +69,7 @@ export class ToolPage {
                 const saveBtn = document.getElementById('save-changes-btn');
                 if (saveBtn) {
                     const originalText = saveBtn.textContent;
-                    saveBtn.textContent = '✅ Сохранено!';
+                    saveBtn.textContent = 'Сохранено!';
                     setTimeout(() => {
                         saveBtn.textContent = originalText;
                     }, 2000);
