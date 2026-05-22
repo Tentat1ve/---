@@ -14,21 +14,20 @@ export class ToolsPage {
         this.init();
     }
 
-    init() {
-        this.updateToolsList();
+    async init() {
+        await this.updateToolsList();
+        this.render();
     }
 
-    updateToolsList() {
-        getAllTools((error, data) => {
-            if (error) {
-                console.error('Ошибка загрузки:', error);
-                this.tools = [];
-            } else {
-                this.tools = data;
-            }
+    async updateToolsList() {
+        try {
+            this.tools = await getAllTools();
             this.filterTools();
-            this.render();
-        });
+        } catch (error) {
+            console.error('Ошибка загрузки:', error);
+            this.tools = [];
+            this.filteredTools = [];
+        }
     }
 
     getHTML() {
@@ -50,50 +49,50 @@ export class ToolsPage {
         `;
     }
 
-    addNewTool() {
+    async addNewTool() {
         const newTool = {
             title: `Новый инструмент ${Date.now()}`,
-            text: "Описание нового инструмента",
+            text: "Описание нового инструмента нагрузочного тестирования",
             type: "Инструмент",
             metric: 500,
             metricUnit: "VU",
-            details: "Описание",
+            details: "Это новый инструмент для нагрузочного тестирования.",
             protocol: "HTTP, HTTPS",
             language: "JavaScript"
         };
         
-        createTool(newTool, (error) => {
-            if (error) {
-                console.error('Ошибка создания:', error);
-                alert('Не удалось создать инструмент');
-            } else {
-                this.updateToolsList();
-            }
-        });
+        try {
+            await createTool(newTool);
+            await this.updateToolsList();
+            this.refreshList();
+        } catch (error) {
+            console.error('Ошибка создания:', error);
+            alert('Не удалось создать инструмент');
+        }
     }
 
-    updateMetric(id, newValue) {
-        updateTool(id, { metric: newValue }, (error) => {
-            if (error) {
-                console.error('Ошибка обновления:', error);
-                alert('Не удалось обновить значение');
-            } else {
-                this.updateToolsList();
-            }
-        });
+    async updateMetric(id, newValue) {
+        try {
+            await updateTool(id, { metric: newValue });
+            await this.updateToolsList();
+            this.refreshList();
+        } catch (error) {
+            console.error('Ошибка обновления:', error);
+            alert('Не удалось обновить значение');
+        }
     }
 
-    deleteTool(id) {
+    async deleteTool(id) {
         if (!confirm('Удалить этот инструмент?')) return;
         
-        deleteTool(id, (error) => {
-            if (error) {
-                console.error('Ошибка удаления:', error);
-                alert('Не удалось удалить инструмент');
-            } else {
-                this.updateToolsList();
-            }
-        });
+        try {
+            await deleteTool(id);
+            await this.updateToolsList();
+            this.refreshList();
+        } catch (error) {
+            console.error('Ошибка удаления:', error);
+            alert('Не удалось удалить инструмент');
+        }
     }
 
     filterTools() {
@@ -145,10 +144,10 @@ export class ToolsPage {
         
         const addBtn = document.getElementById('addToolBtn');
         if (addBtn) {
-            addBtn.onclick = (e) => {
+            addBtn.onclick = async (e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                this.addNewTool();
+                await this.addNewTool();
                 return false;
             };
         }

@@ -13,16 +13,14 @@ export class ToolPage {
         this.tool = null;
     }
 
-    loadTool(callback) {
-        getToolById(this.id, (error, data) => {
-            if (error) {
-                console.error('Ошибка загрузки:', error);
-                callback(false);
-            } else {
-                this.tool = data;
-                callback(true);
-            }
-        });
+    async loadTool() {
+        try {
+            this.tool = await getToolById(this.id);
+            return true;
+        } catch (error) {
+            console.error('Ошибка загрузки:', error);
+            return false;
+        }
     }
 
     getHTML() {
@@ -38,7 +36,7 @@ export class ToolPage {
         `;
     }
 
-    saveChanges() {
+    async saveChanges() {
         const title = document.getElementById('edit-title')?.value;
         const text = document.getElementById('edit-text')?.value;
         const details = document.getElementById('edit-details')?.value;
@@ -54,29 +52,23 @@ export class ToolPage {
         if (protocol) updates.protocol = protocol;
         if (language) updates.language = language;
         
-        updateTool(this.id, updates, (error) => {
-            if (error) {
-                console.error('Ошибка сохранения:', error);
-                alert('Не удалось сохранить изменения');
-            } else {
-                // Обновляем данные
-                getToolById(this.id, (err, data) => {
-                    if (!err && data) {
-                        this.tool = data;
-                        this.renderToolDetail();
-                    }
-                });
-                
-                const saveBtn = document.getElementById('save-changes-btn');
-                if (saveBtn) {
-                    const originalText = saveBtn.textContent;
-                    saveBtn.textContent = '✅ Сохранено!';
-                    setTimeout(() => {
-                        saveBtn.textContent = originalText;
-                    }, 2000);
-                }
+        try {
+            await updateTool(this.id, updates);
+            this.tool = await getToolById(this.id);
+            this.renderToolDetail();
+            
+            const saveBtn = document.getElementById('save-changes-btn');
+            if (saveBtn) {
+                const originalText = saveBtn.textContent;
+                saveBtn.textContent = '✅ Сохранено!';
+                setTimeout(() => {
+                    saveBtn.textContent = originalText;
+                }, 2000);
             }
-        });
+        } catch (error) {
+            console.error('Ошибка сохранения:', error);
+            alert('Не удалось сохранить изменения');
+        }
     }
 
     renderToolDetail() {
@@ -144,33 +136,33 @@ export class ToolPage {
         homeworkPage.render();
     }
 
-    render() {
-        this.loadTool((success) => {
-            if (!success || !this.tool) {
-                this.parent.innerHTML = '<div class="text-center p-5">❌ Инструмент не найден</div>';
-                return;
-            }
-            
-            this.parent.innerHTML = '';
-            this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+    async render() {
+        const success = await this.loadTool();
+        
+        if (!success || !this.tool) {
+            this.parent.innerHTML = '<div class="text-center p-5">❌ Инструмент не найден</div>';
+            return;
+        }
+        
+        this.parent.innerHTML = '';
+        this.parent.insertAdjacentHTML('beforeend', this.getHTML());
 
-            const header = new HeaderComponent(document.getElementById("header-root"));
-            header.render(
-                () => this.goToMainPage(),
-                () => this.goToToolsPage(),
-                () => this.goToHomeworkPage()
-            );
+        const header = new HeaderComponent(document.getElementById("header-root"));
+        header.render(
+            () => this.goToMainPage(),
+            () => this.goToToolsPage(),
+            () => this.goToHomeworkPage()
+        );
 
-            const backButton = new BackButtonComponent(document.getElementById("back-button-root"));
-            backButton.render(() => this.goToToolsPage());
+        const backButton = new BackButtonComponent(document.getElementById("back-button-root"));
+        backButton.render(() => this.goToToolsPage());
 
-            this.renderToolDetail();
+        this.renderToolDetail();
 
-            const accordionRoot = document.getElementById('accordion-root');
-            if (accordionRoot) {
-                const accordion = new InfoAccordionComponent(accordionRoot);
-                accordion.render();
-            }
-        });
+        const accordionRoot = document.getElementById('accordion-root');
+        if (accordionRoot) {
+            const accordion = new InfoAccordionComponent(accordionRoot);
+            accordion.render();
+        }
     }
 }
