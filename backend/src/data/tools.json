@@ -2,7 +2,7 @@
   {
     "id": 1,
     "src": "https://jmeter.apache.org/images/logo.svg",
-    "title": "Apache JMeter",
+    "title": "Apache JMet",
     "text": "Классический инструмент нагрузочного тестирования",
     "type": "Инструмент",
     "metric": 800,
@@ -104,6 +104,18 @@
     "metric": 500,
     "metricUnit": "VU",
     "details": "Описание",
+    "protocol": "HTTP, HTTPS",
+    "language": "JavaScript"
+  },
+  {
+    "id": 14,
+    "src": "https://placehold.co/400x200/3e72dd/white?text=New+Tool",
+    "title": "Новый инструмент",
+    "text": "Тестовый инструмент из Postman",
+    "type": "Инструмент",
+    "metric": 1000,
+    "metricUnit": "VU",
+    "details": "Подробное описание",
     "protocol": "HTTP, HTTPS",
     "language": "JavaScript"
   }

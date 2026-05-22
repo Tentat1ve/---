@@ -11,35 +11,29 @@ export class ToolsPage {
         this.tools = [];
         this.filteredTools = [];
         this.currentFilter = '';
-        this.isLoading = false;
         this.init();
     }
 
-    async init() {
-        await this.loadTools();
-        this.render();
+    init() {
+        this.updateToolsList();
     }
 
-    async loadTools() {
-        if (this.isLoading) return;
-        this.isLoading = true;
-        
-        try {
-            this.tools = await getAllTools();
-            this.filteredTools = [...this.tools];
-            console.log('✅ Загружено инструментов:', this.tools.length);
-        } catch (error) {
-            console.error('Ошибка загрузки:', error);
-            this.tools = [];
-            this.filteredTools = [];
-        }
-        
-        this.isLoading = false;
+    updateToolsList() {
+        getAllTools((error, data) => {
+            if (error) {
+                console.error('Ошибка загрузки:', error);
+                this.tools = [];
+            } else {
+                this.tools = data;
+            }
+            this.filterTools();
+            this.render();
+        });
     }
 
     getHTML() {
         return `
-            <div id="tools-root">
+            <div>
                 <div id="header-root"></div>
                 <div id="tools-page" class="tools-container">
                     <div class="tools-header">
@@ -56,9 +50,7 @@ export class ToolsPage {
         `;
     }
 
-    async addNewTool() {
-        console.log('🔵 addNewTool вызван');
-        
+    addNewTool() {
         const newTool = {
             title: `Новый инструмент ${Date.now()}`,
             text: "Описание нового инструмента",
@@ -70,66 +62,53 @@ export class ToolsPage {
             language: "JavaScript"
         };
         
-        try {
-            const created = await createTool(newTool);
-            console.log('✅ Создан инструмент:', created);
-            await this.loadTools();
-            this.refreshList();
-        } catch (error) {
-            console.error('❌ Ошибка создания:', error);
-        }
+        createTool(newTool, (error) => {
+            if (error) {
+                console.error('Ошибка создания:', error);
+                alert('Не удалось создать инструмент');
+            } else {
+                this.updateToolsList();
+            }
+        });
     }
 
-    async updateMetric(id, newValue) {
-        console.log('🔵 updateMetric вызван', id, newValue);
-        
-        try {
-            await updateTool(id, { metric: newValue });
-            console.log('✅ Метрика обновлена');
-            await this.loadTools();
-            this.refreshList();
-        } catch (error) {
-            console.error('❌ Ошибка обновления:', error);
-        }
+    updateMetric(id, newValue) {
+        updateTool(id, { metric: newValue }, (error) => {
+            if (error) {
+                console.error('Ошибка обновления:', error);
+                alert('Не удалось обновить значение');
+            } else {
+                this.updateToolsList();
+            }
+        });
     }
 
-    async deleteTool(id) {
-        console.log('🔵 deleteTool вызван', id);
-        
+    deleteTool(id) {
         if (!confirm('Удалить этот инструмент?')) return;
         
-        try {
-            await deleteTool(id);
-            console.log('✅ Инструмент удалён');
-            await this.loadTools();
-            this.refreshList();
-        } catch (error) {
-            console.error('❌ Ошибка удаления:', error);
-        }
+        deleteTool(id, (error) => {
+            if (error) {
+                console.error('Ошибка удаления:', error);
+                alert('Не удалось удалить инструмент');
+            } else {
+                this.updateToolsList();
+            }
+        });
     }
 
-    filterTools(value) {
-        console.log('🔵 filterTools вызван', value);
-        this.currentFilter = value;
-        
-        if (value) {
+    filterTools() {
+        if (this.currentFilter) {
             this.filteredTools = this.tools.filter(tool =>
-                tool.title && tool.title.toLowerCase().includes(value.toLowerCase())
+                tool.title && tool.title.toLowerCase().includes(this.currentFilter.toLowerCase())
             );
         } else {
             this.filteredTools = [...this.tools];
         }
-        this.refreshList();
     }
 
     refreshList() {
-        console.log('🔄 refreshList: отрисовка', this.filteredTools.length, 'карточек');
-        
         const container = document.getElementById('tools-list');
-        if (!container) {
-            console.error('❌ Контейнер tools-list не найден');
-            return;
-        }
+        if (!container) return;
         
         container.innerHTML = '';
         
@@ -150,55 +129,42 @@ export class ToolsPage {
     }
 
     goToDetail(id) {
-        console.log('🔵 goToDetail вызван', id);
         const detailPage = new ToolPage(this.parent, id);
         detailPage.render();
-    }
-
-    goToMain() {
-        console.log('🔵 goToMain вызван');
-        const mainPage = new MainPage(this.parent);
-        mainPage.render();
-    }
-
-    goToHomework() {
-        console.log('🔵 goToHomework вызван');
-        const homeworkPage = new HomeworkPage(this.parent);
-        homeworkPage.render();
     }
 
     setupListeners() {
         const filterInput = document.getElementById('filterInput');
         if (filterInput) {
-            // Удаляем старый обработчик
-            const newFilter = filterInput.cloneNode(true);
-            filterInput.parentNode.replaceChild(newFilter, filterInput);
-            
-            newFilter.oninput = (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                this.filterTools(e.target.value);
+            filterInput.oninput = (e) => {
+                this.currentFilter = e.target.value;
+                this.filterTools();
+                this.refreshList();
             };
         }
         
         const addBtn = document.getElementById('addToolBtn');
         if (addBtn) {
-            const newBtn = addBtn.cloneNode(true);
-            addBtn.parentNode.replaceChild(newBtn, addBtn);
-            
-            newBtn.onclick = (e) => {
+            addBtn.onclick = (e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                console.log('🟢 Кнопка "Добавить" нажата');
                 this.addNewTool();
                 return false;
             };
         }
     }
 
+    goToMain() {
+        const mainPage = new MainPage(this.parent);
+        mainPage.render();
+    }
+
+    goToHomework() {
+        const homeworkPage = new HomeworkPage(this.parent);
+        homeworkPage.render();
+    }
+
     render() {
-        console.log('🎨 Рендер ToolsPage');
-        
         this.parent.innerHTML = '';
         this.parent.insertAdjacentHTML('beforeend', this.getHTML());
 

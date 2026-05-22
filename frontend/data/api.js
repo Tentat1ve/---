@@ -1,46 +1,53 @@
-const API_URL = 'http://localhost:3000/api/tools';
+// frontend/data/api.js
+import { ajax } from '../modules/ajax.js';
+import { apiUrls } from '../modules/urls.js';
 
-export async function getAllTools() {
-    try {
-        const response = await fetch(API_URL);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return await response.json();
-    } catch (error) {
-        console.error('API getAllTools error:', error);
-        return [];
-    }
-}
-
-export async function getToolById(id) {
-    const response = await fetch(`${API_URL}/${id}`);
-    if (!response.ok) throw new Error('Инструмент не найден');
-    return response.json();
-}
-
-export async function createTool(toolData) {
-    const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(toolData)
+export function getAllTools(callback) {
+    ajax.get(apiUrls.getTools(), (data, status) => {
+        if (status === 200) {
+            callback(null, data);
+        } else {
+            callback(`Ошибка ${status}`, null);
+        }
     });
-    if (!response.ok) throw new Error('Ошибка создания');
-    return response.json();
 }
 
-export async function updateTool(id, toolData) {
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(toolData)
+export function getToolById(id, callback) {
+    ajax.get(apiUrls.getToolById(id), (data, status) => {
+        if (status === 200) {
+            callback(null, data);
+        } else {
+            callback(`Ошибка ${status}: инструмент не найден`, null);
+        }
     });
-    if (!response.ok) throw new Error('Ошибка обновления');
-    return response.json();
 }
 
-export async function deleteTool(id) {
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE'
+export function createTool(toolData, callback) {
+    ajax.post(apiUrls.createTool(), toolData, (data, status) => {
+        if (status === 201) {
+            callback(null, data);
+        } else {
+            callback(`Ошибка ${status}`, null);
+        }
     });
-    if (!response.ok) throw new Error('Ошибка удаления');
-    return true;
+}
+
+export function updateTool(id, toolData, callback) {
+    ajax.patch(apiUrls.updateTool(id), toolData, (data, status) => {
+        if (status === 200) {
+            callback(null, data);
+        } else {
+            callback(`Ошибка ${status}`, null);
+        }
+    });
+}
+
+export function deleteTool(id, callback) {
+    ajax.delete(apiUrls.deleteTool(id), (data, status) => {
+        if (status === 204) {
+            callback(null, true);
+        } else {
+            callback(`Ошибка ${status}`, null);
+        }
+    });
 }
