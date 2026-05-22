@@ -14,6 +14,7 @@ export class HeaderComponent {
                         <nav class="main-nav">
                             <div class="nav-item" id="homeNavLink">Главная</div>
                             <div class="nav-item" id="toolsNavLink">Инструменты</div>
+                            <div class="nav-item" id="homeworkNavLink">Домашнее задание</div>
                         </nav>
                     </div>
                     <div class="header-right">
@@ -24,7 +25,7 @@ export class HeaderComponent {
         `;
     }
 
-    addListeners(homeListener, toolsListener) {
+    addListeners(homeListener, toolsListener, homeworkListener) {
         document.getElementById('logoLink')?.addEventListener('click', (e) => {
             e.preventDefault();
             homeListener();
@@ -35,14 +36,17 @@ export class HeaderComponent {
         document.getElementById('toolsNavLink')?.addEventListener('click', () => {
             toolsListener();
         });
+        document.getElementById('homeworkNavLink')?.addEventListener('click', () => {
+            homeworkListener();
+        });
         document.getElementById('requestBtn')?.addEventListener('click', () => {
             window.location.href = 'https://github.com/Tentat1ve';
         });
     }
 
-    render(homeListener, toolsListener) {
+    render(homeListener, toolsListener, homeworkListener) {
         const html = this.getHTML();
         this.parent.insertAdjacentHTML('beforeend', html);
-        this.addListeners(homeListener, toolsListener);
+        this.addListeners(homeListener, toolsListener, homeworkListener);
     }
 }

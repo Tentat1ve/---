@@ -3,6 +3,8 @@ import { ToolCardComponent } from "../../components/tool-card/index.js";
 import { getAllTools, addTool, deleteTool, updateTool, getNextId } from "../../data/store.js";
 import { MainPage } from "../main/index.js";
 import { ToolPage } from "../tool/index.js";
+import { HomeworkPage } from "../homework/index.js";
+import { FooterComponent } from "../../components/footer/index.js";
 
 export class ToolsPage {
     constructor(parent) {
@@ -45,7 +47,6 @@ export class ToolsPage {
         `;
     }
 
-    // Шаблон для новой карточки
     getNewToolTemplate() {
         const newId = getNextId();
         return {
@@ -62,7 +63,6 @@ export class ToolsPage {
         };
     }
 
-    // Добавление новой карточки
     addNewTool() {
         const newTool = this.getNewToolTemplate();
         addTool(newTool);
@@ -70,7 +70,6 @@ export class ToolsPage {
         this.renderToolsList();
     }
 
-    // Сохранение изменённой метрики
     saveMetric(id, newMetricValue) {
         updateTool(id, { metric: newMetricValue });
         this.updateToolsList();
@@ -140,15 +139,24 @@ export class ToolsPage {
         mainPage.render();
     }
 
+    goToHomeworkPage() {
+        const homeworkPage = new HomeworkPage(this.parent);
+        homeworkPage.render();
+    }
+
     render() {
         this.parent.innerHTML = '';
         this.parent.insertAdjacentHTML('beforeend', this.getHTML());
 
         const header = new HeaderComponent(document.getElementById("header-root"));
+        // Передаём ТРИ колбэка: главная, инструменты (обновить текущую), домашнее задание
         header.render(
-            () => this.goToMainPage(),
-            () => this.render()
+            () => this.goToMainPage(),     // Главная
+            () => this.render(),            // Инструменты (обновить текущую страницу)
+            () => this.goToHomeworkPage()   // Домашнее задание
         );
+        const footer = new FooterComponent(document.getElementById("footer-root"));
+        footer.render();
 
         this.addEventListeners();
         this.renderToolsList();

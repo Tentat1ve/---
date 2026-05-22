@@ -1,9 +1,12 @@
 import { HeaderComponent } from "../../components/header/index.js";
+import { FooterComponent } from "../../components/footer/index.js";
 import { ToolsPage } from "../tools/index.js";
+import { HomeworkPage } from "../homework/index.js";
 
 export class MainPage {
     constructor(parent) {
         this.parent = parent;
+        this.footer = null;
     }
 
     getHTML() {
@@ -34,13 +37,25 @@ export class MainPage {
                         </div>          
                     </div>
                 </div>
+                <div id="footer-root"></div>
             </div>
         `;
     }
 
     showToolsPage() {
+        if (this.footer) {
+            this.footer.dispose();
+        }
         const toolsPage = new ToolsPage(this.parent);
         toolsPage.render();
+    }
+
+    showHomeworkPage() {
+        if (this.footer) {
+            this.footer.dispose();
+        }
+        const homeworkPage = new HomeworkPage(this.parent);
+        homeworkPage.render();
     }
 
     render() {
@@ -50,7 +65,12 @@ export class MainPage {
         const header = new HeaderComponent(document.getElementById("header-root"));
         header.render(
             () => this.render(),
-            () => this.showToolsPage()
+            () => this.showToolsPage(),
+            () => this.showHomeworkPage()
         );
+
+        // Добавляем футер
+        this.footer = new FooterComponent(document.getElementById("footer-root"));
+        this.footer.render();
     }
 }

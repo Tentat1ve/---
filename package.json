@@ -2,6 +2,7 @@
   "name": "load-testing-calculator",
   "version": "1.0.0",
   "dependencies": {
-    "bootstrap": "^5.3.8"
+    "bootstrap": "^5.3.8",
+    "three": "^0.160.1"
   }
 }
