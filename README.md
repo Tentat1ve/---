@@ -26,23 +26,23 @@ button:active {
   transform: translateY(1px) scale(.99); 
 }
 ```
-2. Адаптивная сеточная раскладка кнопок
-
+2. Header как на сайте
 ```css
-#result + div > div {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+.header-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-#btn_op_equal {
-  background: #22c55e;
-  color: #06210f;
-  grid-column: span 2;
-}
-
-#btn_digit_0 { 
-  grid-column: span 2; 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 48px;
 }
 ```
 
